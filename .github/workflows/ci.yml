@@ -1,0 +1,20 @@
+on:
+  pull_request:
+  push:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ["p1", "p2"]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - uses: actions/setup-java@v4
+      with:
+        java-version: 17
+        distribution: adopt
+    - run: sbt compile "${{ matrix.project }}/run"
